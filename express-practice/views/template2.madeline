@@ -1,0 +1,8 @@
+<head>
+#title#
+</head>
+<body>
+<header>#message#</header>
+#content#
+<a href="#url#">#text#</a>
+</body>
