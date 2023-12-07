@@ -1,0 +1,9 @@
+mkdir folder name
+cd (folder name)
+touch server.js
+npm init -y
+npm i express
+
+npm i -g nodemon
+
+npm install jsx-view-engine react react-dom --save
