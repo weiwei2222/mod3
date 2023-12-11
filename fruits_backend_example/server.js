@@ -1,7 +1,23 @@
+// require dotenv so that I can use the .env fil
+require("dotenv").config();
 const express = require("express");
+// require mongoose so that I can connect to my db
+const mongoose = require("mongoose");
 const app = express();
-const fruits = require("./models/fruits.js");
+// const fruits = require('./models/fruits.js');
+// we want to import the fruit model
+const Fruit = require("./models/fruit");
 const jsxViewEngine = require("jsx-view-engine");
+
+// Global configuration
+const mongoURI = process.env.MONGO_URI;
+const db = mongoose.connection;
+
+// Connect to Mongo
+mongoose.connect(mongoURI);
+mongoose.connection.once("open", () => {
+  console.log("connected to mongo");
+});
 
 app.set("view engine", "jsx");
 app.set("views", "./views");
@@ -28,10 +44,13 @@ app.engine("jsx", jsxViewEngine());
 //     }
 // ];
 
+// ================ Middleware ================
+//
 app.use((req, res, next) => {
   console.log("Middleware: I run for all routes");
   next();
 });
+
 //near the top, around other app.use() calls
 app.use(express.urlencoded({ extended: false }));
 
@@ -53,35 +72,56 @@ app.get("/", (req, res) => {
 });
 
 // I - INDEX - dsiplays a list of all fruits
-app.get("/fruits/", (req, res) => {
+app.get("/fruits/", async (req, res) => {
   // res.send(fruits);
-  res.render("Index", { fruits: fruits });
+  try {
+    const foundFruits = await Fruit.find({});
+    res.status(200).render("Index", { fruits: foundFruits });
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
+// N - NEW - allows a user to input a new fruit
 app.get("/fruits/new", (req, res) => {
   res.render("New");
 });
 
-app.post("/fruits", (req, res) => {
+// C - CREATE - update our data store
+app.post("/fruits", async (req, res) => {
   if (req.body.readyToEat === "on") {
     //if checked, req.body.readyToEat is set to 'on'
-    req.body.readyToEat = true; //do some data correction
+    req.body.readyToEat = true;
   } else {
     //if not checked, req.body.readyToEat is undefined
-    req.body.readyToEat = false; //do some data correction
+    req.body.readyToEat = false;
   }
-  fruits.push(req.body);
 
-  console.log(fruits);
-  res.redirect("/fruits");
+  try {
+    const createdFruit = await Fruit.create(req.body);
+    res.status(200).redirect("/fruits");
+  } catch (err) {
+    res.status(400).send(err);
+  }
+  // fruits.push(req.body);
+  // console.log(fruits);
+  // console.log(req.body)
+  // res.send('data received');
+  //  *** We will add this back in later
+  //  ***
+  // res.redirect('/fruits'); // send user back to /fruits
 });
+
 // S - SHOW - show route displays details of an individual fruit
-app.get("/fruits/:indexOfFruitsArray", (req, res) => {
-  // res.send(fruits[req.params.indexOfFruitsArray]);
-  res.render("Show", {
-    // second parameter must be an object
-    fruit: fruits[req.params.indexOfFruitsArray],
-  });
+app.get("/fruits/:id", async (req, res) => {
+  try {
+    const foundFruit = await Fruit.findById(req.params.id);
+    res.render("Show", {
+      fruit: foundFruit,
+    });
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 app.listen(3000, () => {

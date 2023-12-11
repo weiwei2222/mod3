@@ -15,8 +15,8 @@ class Index extends React.Component {
           {fruits.map((fruit, i) => {
             return (
               <li>
-                The <a href={`/fruits/${i}`}>{fruit.name}</a> is {fruit.color}{" "}
-                <br></br>
+                The <a href={`/fruits/${fruit._id}`}>{fruit.name}</a> is{" "}
+                {fruit.color} <br></br>
                 {fruit.readyToEat
                   ? `It is ready to eat`
                   : `It is NOT ready to eat`}
