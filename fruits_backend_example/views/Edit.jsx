@@ -9,10 +9,10 @@ class Edit extends React.Component {
           action={`/fruits/${this.props.fruit._id}?_method=PUT`}
           method="POST"
         >
-          Name:{" "}
+          Name:
           <input type="text" name="name" defaultValue={this.props.fruit.name} />
           <br />
-          Color:{" "}
+          Color:
           <input
             type="text"
             name="color"
