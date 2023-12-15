@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 // const fruits = require('./models/fruits.js');
 // we want to import the fruit model
 const Fruit = require("./models/fruit");
@@ -189,6 +190,6 @@ app.get("/fruits/:id", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log("listening");
 });
