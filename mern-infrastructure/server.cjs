@@ -8,6 +8,9 @@ const logger = require("morgan");
 // define variables
 const PORT = process.env.PORT || 3001;
 
+// Connect to the database
+require("./config/database.cjs");
+
 // create my app
 const app = express();
 
