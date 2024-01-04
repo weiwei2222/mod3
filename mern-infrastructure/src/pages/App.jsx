@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
 import AuthPage from "./AuthPage";
 import NewOrderPage from "./NewOrderPage";
 import OrderHistoryPage from "./OrderHistoryPage";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
   // in here
   // use the useState hook to define a state variable called user
