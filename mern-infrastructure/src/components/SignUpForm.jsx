@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+// import the SignUp method
+import { signUp } from "../utilities/users-services";
 
-export default class SignUpForm extends Component {
+export class SignUpForm extends Component {
   state = {
     name: "",
     email: "",
@@ -9,6 +11,7 @@ export default class SignUpForm extends Component {
     error: "",
   };
 
+  // The object passed to setState is merged with the current state object
   handleChange = (evt) => {
     this.setState({
       [evt.target.name]: evt.target.value,
@@ -16,16 +19,33 @@ export default class SignUpForm extends Component {
     });
   };
 
-  handleSubmit = (evt) => {
+  handleSubmit = async (evt) => {
     evt.preventDefault();
-    alert(JSON.stringify(this.state));
+    // alert(JSON.stringify(this.state));
+    try {
+      // We don't want to send the 'error' or 'confirm' property,
+      // so let's make a copy of the state object, then delete them
+      const formData = { ...this.state }; // makes a copy of the state variable
+      delete formData.error;
+      delete formData.confirm;
+      // The promise returned by the signUp service method
+      // will resolve to the uder object included in the
+      // payload of the JSON Web Token (JWT)
+      const user = await signUp(formData);
+      // Baby Step!
+      console.log(user);
+    } catch {
+      // An error occured
+      this.setState({ error: "Sign Up Failed - Try Again" });
+    }
   };
 
   render() {
     const disable = this.state.password !== this.state.confirm;
+
     return (
       <div>
-        <div className="form-container">
+        <div className="form=container">
           <form autoComplete="off" onSubmit={this.handleSubmit}>
             <label>Name</label>
             <input
@@ -69,3 +89,5 @@ export default class SignUpForm extends Component {
     );
   }
 }
+
+export default SignUpForm;
