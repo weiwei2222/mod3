@@ -1,11 +1,13 @@
 import React from "react";
 import SignUpForm from "../components/SignUpForm";
+import LoginForm from "../components/LoginForm";
 
-function AuthPage() {
+function AuthPage(props) {
   return (
     <>
       <h1>AuthPage</h1>
-      <SignUpForm />
+      <SignUpForm setUser={props.setUser} />
+      <LoginForm />
     </>
   );
 }
