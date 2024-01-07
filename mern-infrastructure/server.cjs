@@ -1,20 +1,20 @@
 // bring in all dependencies
-require("dotenv").config();
-const express = require("express");
-const path = require("path");
-const favicon = require("serve-favicon");
-const logger = require("morgan");
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
 
 // define variables
 const PORT = process.env.PORT || 3001;
 
 // Connect to the database
-require("./config/database.cjs");
+require('./config/database.cjs');
 
 // create my app
 const app = express();
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 
 // Configure both serve-favicon and static middlewares
@@ -26,28 +26,30 @@ app.use(express.json());
 // and I'll uncomment when we use it
 // ==
 // app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Middleware to verify token and assign user object of payload to req.user.
 // Be sure to mount before routes
-app.use(require("./config/checkToken.cjs"));
+app.use(require('./config/checkToken.cjs'));
 
 // Put API routes here, before the "catch all" routes
-app.get("/api/test", (req, res) => {
-  res.send("You just hit a API route");
-});
+app.get('/api/test', (req, res) => {
+    res.send('You just hit a API route');
+  });
 
-app.use("/api/users", require("./routes/api/users.cjs"));
-// we have included the line
+app.use('/api/users', require('./routes/api/users.cjs'));
+// we have included the line 
 // const userRouter = require('./routes/api/users.cjs')
 // app.use('/api/user', userRouter);
 
 // The following "catch all" route (note the /*) is necessary
 // to return the index.html on all non-AJAX requests
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
+app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+
 });
 
+
 app.listen(PORT, function () {
-  console.log(`Express app running on port: ${PORT}`);
-});
+    console.log(`Express app running on port: ${PORT}`);
+})

@@ -1,19 +1,19 @@
 // routes/api/users.cjs
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const usersCtrl = require("../../controllers/api/users.cjs");
+const usersCtrl = require('../../controllers/api/users.cjs');
 
-// require the authorization middleware function
-const ensureLoggedIn = require("../../config/ensureLoggedIn.cjs");
+// require authorization middleware function
+const ensureLoggedIn = require('../../config/ensureLoggedIn.cjs');
 
 // GET /api/users/check-token
-router.get("/check-token", ensureLoggedIn, usersCtrl.checkToken);
+router.get('/check-token', ensureLoggedIn, usersCtrl.checkToken);
 
 // POST /api/users
-router.post("/", usersCtrl.create);
+router.post('/', usersCtrl.create);
 
 // POST /api/users/login
-router.post("/login", usersCtrl.login);
+router.post('/login', usersCtrl.login);
 
 module.exports = router;
